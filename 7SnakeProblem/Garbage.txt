@@ -1,0 +1,248 @@
+﻿for (int combCount = 0; combCount < combinations.Count; combCount++)
+                {
+
+                    int z = 0;
+                    int value = 0;
+                    int x = 0;
+                    int y = 0;
+                    int prevValue = 0;
+                    x = rand.Next(1, 5);
+                    y = rand.Next(1, 10);
+                    snakeListTempA = new List<SnakePart>();
+
+                    while (z < 7)
+                    {
+                        value = value + snakeList.Where(s => s.X == x && s.Y == y).Select(s => s.value).Single();
+
+                        SnakePart snake = new SnakePart();
+                        snake.X = x;
+                        snake.Y = y;
+                        snake.value = value;
+
+                        List<int[]> directions = new List<int[]>();
+                        List<int[]> removePosition = new List<int[]>();
+
+                        directions.Add(new int[] { x - 1, y });
+                        directions.Add(new int[] { x + 1, y });
+                        directions.Add(new int[] { x, y - 1 });
+                        directions.Add(new int[] { x, y + 1 });
+
+                        int[] xY;
+                        for (int d = 0; d < directions.Count; d++)
+                        {
+                            xY = directions[d];
+
+                            if (xY[0] == 0 || xY[1] == 0)
+                            {
+                                removePosition.Add(new int[] { xY[0], xY[1] });
+                            }
+                            if (xY[0] == 6 || xY[1] == 11)
+                            {
+                                removePosition.Add(new int[] { xY[0], xY[1] });
+                            }
+                            if (snakeListTempA.Where(s => s.X == xY[0] && s.Y == xY[1]).Count() > 0)
+                            {
+                                removePosition.Add(new int[] { xY[0], xY[1] });
+                            }
+                        }
+
+                        foreach(int[] remove in removePosition)
+                        {
+                            directions.RemoveAll(r => r[0] == remove[0] && r[1] == remove[1]);                        
+                        }
+
+                        int randomDirection = rand.Next(0, directions.Count - 1);
+                        x = directions[randomDirection][0];
+                        y = directions[randomDirection][1];
+
+                        snakeListTempA.Add(snake);
+                        if (z == 6)
+                        {
+                            prevValue = value;
+                        }
+                        z++;
+                    }
+                    
+                    List<SnakePart> snakeListForSetB = snakeList;
+                    foreach (SnakePart snakePart in snakeListTempA)
+                    {
+                        snakeListForSetB.RemoveAll(s => s.X == snakePart.X && s.Y == snakePart.Y);
+                    }
+                    Combinations<int> combinationsSetB = new Combinations<int>(snakeListForSetB.Select(v => v.value).ToArray(), 7);
+
+                    int combCount2 = 0;
+
+                    RestartSetB:
+                    while (combCount2 < combinationsSetB.Count)
+                    {
+                        ResetLoop:
+                        snakeListTempB = new List<SnakePart>();
+                        value = 0;
+                        z = 0;
+                        x = rand.Next(1, 5);
+                        y = rand.Next(1, 10);
+                        while (snakeListTempA.Where(s => s.X == x && s.Y == y).Count() > 0)
+                        {
+                            x = rand.Next(1, 5);
+                            y = rand.Next(1, 10);
+                        }
+                        try
+                        {
+                            while (z < 7)
+                            {
+                                value = value + snakeList.Where(s => s.X == x && s.Y == y).Select(s => s.value).Single();
+
+                                SnakePart snake = new SnakePart();
+                                snake.X = x;
+                                snake.Y = y;
+                                snake.value = value;
+                                snakeListTempB.Add(snake);
+                        
+                                if (z == 6)
+                                {
+                                    if (prevValue == value)
+                                    {
+                                        Console.WriteLine(snakeList.Where(s => s.X == snakeListTempA[0].X && s.Y == snakeListTempA[0].Y).Single().value + " + " +
+                                                          snakeList.Where(s => s.X == snakeListTempA[1].X && s.Y == snakeListTempA[1].Y).Single().value + " + " +
+                                                          snakeList.Where(s => s.X == snakeListTempA[2].X && s.Y == snakeListTempA[2].Y).Single().value + " + " +
+                                                          snakeList.Where(s => s.X == snakeListTempA[3].X && s.Y == snakeListTempA[3].Y).Single().value + " + " +
+                                                          snakeList.Where(s => s.X == snakeListTempA[4].X && s.Y == snakeListTempA[4].Y).Single().value + " + " +
+                                                          snakeList.Where(s => s.X == snakeListTempA[5].X && s.Y == snakeListTempA[5].Y).Single().value + " + " +
+                                                          snakeList.Where(s => s.X == snakeListTempA[6].X && s.Y == snakeListTempA[6].Y).Single().value + " = " +
+                                                          value);
+
+                                        Console.WriteLine(snakeList.Where(s => s.X == snakeListTempB[0].X && s.Y == snakeListTempB[0].Y).Single().value + " + " +
+                                                          snakeList.Where(s => s.X == snakeListTempB[1].X && s.Y == snakeListTempB[1].Y).Single().value + " + " +
+                                                          snakeList.Where(s => s.X == snakeListTempB[2].X && s.Y == snakeListTempB[2].Y).Single().value + " + " +
+                                                          snakeList.Where(s => s.X == snakeListTempB[3].X && s.Y == snakeListTempB[3].Y).Single().value + " + " +
+                                                          snakeList.Where(s => s.X == snakeListTempB[4].X && s.Y == snakeListTempB[4].Y).Single().value + " + " +
+                                                          snakeList.Where(s => s.X == snakeListTempB[5].X && s.Y == snakeListTempB[5].Y).Single().value + " + " +
+                                                          snakeList.Where(s => s.X == snakeListTempB[6].X && s.Y == snakeListTempB[6].Y).Single().value + " = " +
+                                                          value);
+                                        Console.ReadKey();
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        combCount2++;
+                                        goto RestartSetB;
+                                    }
+                                }
+
+                                List<int[]> directions = new List<int[]>();
+                                List<int[]> removePosition = new List<int[]>();
+
+                                directions.Add(new int[] { x - 1, y });
+                                directions.Add(new int[] { x + 1, y });
+                                directions.Add(new int[] { x, y - 1 });
+                                directions.Add(new int[] { x, y + 1 });
+
+                                int[] xY;
+                                for (int d = 0; d < directions.Count; d++)
+                                {   
+                                    xY = directions[d];
+                                                        
+                                    if (xY[0] == 0 || xY[1] == 0)
+                                    {
+                                        removePosition.Add(new int[] { xY[0], xY[1] });
+                                    }
+                                    if (xY[0] == 6 || xY[1] == 11)
+                                    {
+                                        removePosition.Add(new int[] { xY[0], xY[1] });
+                                    }
+                                    if (snakeListTempB.Where(s => s.X == xY[0] && s.Y == xY[1]).Count() > 0)
+                                    {
+                                        removePosition.Add(new int[] { xY[0], xY[1] });
+                                    }
+                                    if (snakeListTempA.Where(s => s.X == xY[0] && s.Y == xY[1]).Count() > 0)
+                                    {
+                                        removePosition.Add(new int[] { xY[0], xY[1] });
+                                    }
+                                }
+
+                                foreach (int[] remove in removePosition)
+                                {
+                                    directions.RemoveAll(r => r[0] == remove[0] && r[1] == remove[1]);
+                                }
+
+                                if(directions.Count == 0)
+                                {
+                                    goto ResetLoop;
+                                }
+
+                                int randomDirection = rand.Next(0, directions.Count - 1);
+                                x = directions[randomDirection][0];
+                                y = directions[randomDirection][1];
+                                               
+                                z++;
+                            }
+                        }catch(Exception e)
+                        {
+                            Console.WriteLine("Fail");
+                            Console.ReadKey();
+                        }
+                    }
+                }
+
+
+
+
+
+
+
+				int count = 0;
+                foreach (IList<int> c in combinations)
+                {
+
+                    int[] listA = c.ToArray();
+                    int sumA = listA[0] + listA[1] + listA[2] + listA[3] + listA[4] + listA[5] + listA[6];
+
+                    count = combinations.Where(o => o[0] + o[1] + o[2] + o[3] + o[4] + o[5] + o[6] == sumA
+                                               && (o[0] != listA[0] && o[0] != listA[1] && o[0] != listA[2] && o[0] != listA[3] && o[0] != listA[4] && o[0] != listA[5] && o[0] != listA[6])
+                                               && (o[1] != listA[0] && o[1] != listA[1] && o[1] != listA[2] && o[1] != listA[3] && o[1] != listA[4] && o[1] != listA[5] && o[1] != listA[6])
+                                               && (o[2] != listA[0] && o[2] != listA[1] && o[2] != listA[2] && o[2] != listA[3] && o[2] != listA[4] && o[2] != listA[5] && o[2] != listA[6])
+                                               && (o[3] != listA[0] && o[3] != listA[1] && o[3] != listA[2] && o[3] != listA[3] && o[3] != listA[4] && o[3] != listA[5] && o[3] != listA[6])
+                                               && (o[4] != listA[0] && o[4] != listA[1] && o[4] != listA[2] && o[4] != listA[3] && o[4] != listA[4] && o[4] != listA[5] && o[4] != listA[6])
+                                               && (o[5] != listA[0] && o[5] != listA[1] && o[5] != listA[2] && o[5] != listA[3] && o[5] != listA[4] && o[5] != listA[5] && o[5] != listA[6])
+                                               && (o[6] != listA[0] && o[6] != listA[1] && o[6] != listA[2] && o[6] != listA[3] && o[6] != listA[4] && o[6] != listA[5] && o[6] != listA[6])
+                                               ).Count();
+
+                    if (count > 0)
+                    {
+                        Console.WriteLine("Valid pair found. Now loading...");
+                        int[] listB = combinations.Where(o => o[0] + o[1] + o[2] + o[3] + o[4] + o[5] + o[6] == sumA
+                                                         && (o[0] != listA[0] && o[0] != listA[1] && o[0] != listA[2] && o[0] != listA[3] && o[0] != listA[4] && o[0] != listA[5] && o[0] != listA[6])
+                                                         && (o[1] != listA[0] && o[1] != listA[1] && o[1] != listA[2] && o[1] != listA[3] && o[1] != listA[4] && o[1] != listA[5] && o[1] != listA[6])
+                                                         && (o[2] != listA[0] && o[2] != listA[1] && o[2] != listA[2] && o[2] != listA[3] && o[2] != listA[4] && o[2] != listA[5] && o[2] != listA[6])
+                                                         && (o[3] != listA[0] && o[3] != listA[1] && o[3] != listA[2] && o[3] != listA[3] && o[3] != listA[4] && o[3] != listA[5] && o[3] != listA[6])
+                                                         && (o[4] != listA[0] && o[4] != listA[1] && o[4] != listA[2] && o[4] != listA[3] && o[4] != listA[4] && o[4] != listA[5] && o[4] != listA[6])
+                                                         && (o[5] != listA[0] && o[5] != listA[1] && o[5] != listA[2] && o[5] != listA[3] && o[5] != listA[4] && o[5] != listA[5] && o[5] != listA[6])
+                                                         && (o[6] != listA[0] && o[6] != listA[1] && o[6] != listA[2] && o[6] != listA[3] && o[6] != listA[4] && o[6] != listA[5] && o[6] != listA[6])
+                                                         ).First().ToArray();
+                        Console.WriteLine("The pair values are listed below...");
+
+                        Console.WriteLine("7 Snakes A: " + listA[0] + " + " +
+                                          listA[1] + " + " +
+                                          listA[2] + " + " +
+                                          listA[3] + " + " +
+                                          listA[4] + " + " +
+                                          listA[5] + " + " +
+                                          listA[6] + " = " + sumA);
+                        Console.WriteLine("7 Snakes B: " + listB[0] + " + " +
+                                          listB[1] + " + " +
+                                          listB[2] + " + " +
+                                          listB[3] + " + " +
+                                          listB[4] + " + " +
+                                          listB[5] + " + " +
+                                          listB[6] + " = " + sumA);
+                        Console.WriteLine("Please press ENTER to exit...");
+                        Console.ReadLine();
+                    }
+                }
+
+                if(count == 0)
+                {
+                    Console.WriteLine("FAIL");
+                    Console.WriteLine("Please press ENTER to exit...");
+                    Console.ReadLine();
+                }
