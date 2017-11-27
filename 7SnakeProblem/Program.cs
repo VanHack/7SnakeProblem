@@ -64,7 +64,7 @@ namespace SevenSnakeProblem
                 {
                     foreach(SnakePart snake in snakeListTemp)
                     {
-                        if(count == 1)
+                        if(count == 1)  
                         {
                             validList = true;
                             count++;
