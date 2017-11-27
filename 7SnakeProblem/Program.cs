@@ -49,10 +49,9 @@ namespace SevenSnakeProblem
                     }
                 }
 
-                Console.WriteLine("Searching for a valid pair...");
 
                 Combinations<SnakePart> combinations = new Combinations<SnakePart>(snakeList, 7, GenerateOption.WithoutRepetition);
-                Console.WriteLine("There are a total of " + combinations.Count.ToString("N") + " possible combinations. It can take a few minutes...");
+                Console.WriteLine("Making valid sets of 7 seven linked numbers...");
 
                 List<List<SnakePart>> snakeListFinal = new List<List<SnakePart>>();
                 List<SnakePart> snakeListTempA = new List<SnakePart>();
@@ -73,8 +72,11 @@ namespace SevenSnakeProblem
                             prevY = snake.Y;
                             continue;
                         }
-                        if((snake.X == prevX + 1 || snake.X == prevX - 1 || snake.X == prevX) 
-                            && (snake.Y == prevY + 1 || snake.Y == prevY - 1 || snake.Y == prevY))
+
+                        if(   (snake.X == prevX - 1 && snake.Y == prevY)
+                           || (snake.X == prevX + 1 && snake.Y == prevY)
+                           || (snake.X == prevX && snake.Y == prevY - 1)
+                           || (snake.X == prevX && snake.Y == prevY + 1))                        
                         {
                             validList = true;                            
                         }
@@ -95,44 +97,53 @@ namespace SevenSnakeProblem
                 }
 
                 int count2 = 0;
+                Console.WriteLine("Searching for a valid pair...");
                 foreach (List<SnakePart> c in snakeListFinal)
                 {
-
                     List<SnakePart> listA = c;
-                    int sumA = listA[0].value + listA[1].value + listA[2].value + listA[3].value + listA[4].value + listA[5].value + listA[6].value;
+                    int sumA = listA[0].value + listA[1].value + listA[2].value + listA[3].value + listA[4].value + listA[5].value + listA[6].value;                    
+                    count2 = snakeListFinal.Where(o => o[0].value + o[1].value + o[2].value + o[3].value + o[4].value + o[5].value + o[6].value == sumA).Count();
 
-                    count2 = snakeListFinal.Where(o => o[0].value + o[1].value + o[2].value + o[3].value + o[4].value + o[5].value + o[6].value == sumA
-                                               && ( (o[0].X != listA[0].X && o[0].Y != listA[0].Y) && (o[0].X != listA[1].X && o[0].Y != listA[1].Y) && (o[0].X != listA[2].X && o[0].Y != listA[2].Y) && (o[0].X != listA[3].X && o[0].Y != listA[3].Y) && (o[0].X != listA[4].X && o[0].Y != listA[4].Y) && (o[0].X != listA[5].X && o[0].Y != listA[5].Y) && (o[0].X != listA[6].X && o[0].Y != listA[6].Y))
-                                               && ( (o[1].X != listA[0].X && o[1].Y != listA[0].Y) && (o[1].X != listA[1].X && o[1].Y != listA[1].Y) && (o[1].X != listA[2].X && o[1].Y != listA[2].Y) && (o[1].X != listA[3].X && o[1].Y != listA[3].Y) && (o[1].X != listA[4].X && o[1].Y != listA[4].Y) && (o[1].X != listA[5].X && o[1].Y != listA[5].Y) && (o[1].X != listA[6].X && o[1].Y != listA[6].Y))
-                                               && ( (o[2].X != listA[0].X && o[2].Y != listA[0].Y) && (o[2].X != listA[1].X && o[2].Y != listA[1].Y) && (o[2].X != listA[2].X && o[2].Y != listA[2].Y) && (o[2].X != listA[3].X && o[2].Y != listA[3].Y) && (o[2].X != listA[4].X && o[2].Y != listA[4].Y) && (o[2].X != listA[5].X && o[2].Y != listA[5].Y) && (o[2].X != listA[6].X && o[2].Y != listA[6].Y))
-                                               && ( (o[3].X != listA[0].X && o[3].Y != listA[0].Y) && (o[3].X != listA[1].X && o[3].Y != listA[1].Y) && (o[3].X != listA[2].X && o[3].Y != listA[2].Y) && (o[3].X != listA[3].X && o[3].Y != listA[3].Y) && (o[3].X != listA[4].X && o[3].Y != listA[4].Y) && (o[3].X != listA[5].X && o[3].Y != listA[5].Y) && (o[3].X != listA[6].X && o[3].Y != listA[6].Y))
-                                               && ( (o[4].X != listA[0].X && o[4].Y != listA[0].Y) && (o[4].X != listA[1].X && o[4].Y != listA[1].Y) && (o[4].X != listA[2].X && o[4].Y != listA[2].Y) && (o[4].X != listA[3].X && o[4].Y != listA[3].Y) && (o[4].X != listA[4].X && o[4].Y != listA[4].Y) && (o[4].X != listA[5].X && o[4].Y != listA[5].Y) && (o[4].X != listA[6].X && o[4].Y != listA[6].Y))
-                                               && ( (o[5].X != listA[0].X && o[5].Y != listA[0].Y) && (o[5].X != listA[1].X && o[5].Y != listA[1].Y) && (o[5].X != listA[2].X && o[5].Y != listA[2].Y) && (o[4].X != listA[3].X && o[5].Y != listA[3].Y) && (o[5].X != listA[4].X && o[5].Y != listA[4].Y) && (o[5].X != listA[5].X && o[5].Y != listA[5].Y) && (o[5].X != listA[6].X && o[5].Y != listA[6].Y))
-                                               && ( (o[6].X != listA[0].X && o[6].Y != listA[0].Y) && (o[6].X != listA[1].X && o[6].Y != listA[1].Y) && (o[6].X != listA[2].X && o[6].Y != listA[2].Y) && (o[6].X != listA[3].X && o[6].Y != listA[3].Y) && (o[6].X != listA[4].X && o[6].Y != listA[4].Y) && (o[6].X != listA[5].X && o[6].Y != listA[5].Y) && (o[6].X != listA[6].X && o[6].Y != listA[6].Y))
-                                               ).Count();
-
+                    List<List<SnakePart>> filteredSnakeList = new List<List<SnakePart>>();
                     if (count2 > 0)
                     {
+                        List<List<SnakePart>> listTemp = snakeListFinal.Where(o => o[0].value + o[1].value + o[2].value + o[3].value + o[4].value + o[5].value + o[6].value == sumA).ToList();
+                        foreach(List<SnakePart> filterSnakeList in listTemp)
+                        {
+                            foreach(SnakePart filterSnakePart in filterSnakeList)
+                            {
+                                if (   (listA[0].X == filterSnakePart.X && listA[0].Y == filterSnakePart.Y)
+                                    || (listA[1].X == filterSnakePart.X && listA[1].Y == filterSnakePart.Y)
+                                    || (listA[2].X == filterSnakePart.X && listA[2].Y == filterSnakePart.Y)
+                                    || (listA[3].X == filterSnakePart.X && listA[3].Y == filterSnakePart.Y)
+                                    || (listA[4].X == filterSnakePart.X && listA[4].Y == filterSnakePart.Y)
+                                    || (listA[5].X == filterSnakePart.X && listA[5].Y == filterSnakePart.Y)
+                                    || (listA[6].X == filterSnakePart.X && listA[6].Y == filterSnakePart.Y))
+                                {
+                                    goto NextIteration;
+                                }
+                            }
+                            filteredSnakeList.Add(filterSnakeList);
+                            NextIteration:;
+                        }
+                    }
+
+                    if (filteredSnakeList.Count > 0)
+                    {
                         Console.WriteLine("Valid pair found. Now loading...");
-                        List<SnakePart> listB = snakeListFinal.Where(o => o[0].value + o[1].value + o[2].value + o[3].value + o[4].value + o[5].value + o[6].value == sumA
-                                               && ((o[0].X != listA[0].X && o[0].Y != listA[0].Y) && (o[0].X != listA[1].X && o[0].Y != listA[1].Y) && (o[0].X != listA[2].X && o[0].Y != listA[2].Y) && (o[0].X != listA[3].X && o[0].Y != listA[3].Y) && (o[0].X != listA[4].X && o[0].Y != listA[4].Y) && (o[0].X != listA[5].X && o[0].Y != listA[5].Y) && (o[0].X != listA[6].X && o[0].Y != listA[6].Y))
-                                               && ((o[1].X != listA[0].X && o[1].Y != listA[0].Y) && (o[1].X != listA[1].X && o[1].Y != listA[1].Y) && (o[1].X != listA[2].X && o[1].Y != listA[2].Y) && (o[1].X != listA[3].X && o[1].Y != listA[3].Y) && (o[1].X != listA[4].X && o[1].Y != listA[4].Y) && (o[1].X != listA[5].X && o[1].Y != listA[5].Y) && (o[1].X != listA[6].X && o[1].Y != listA[6].Y))
-                                               && ((o[2].X != listA[0].X && o[2].Y != listA[0].Y) && (o[2].X != listA[1].X && o[2].Y != listA[1].Y) && (o[2].X != listA[2].X && o[2].Y != listA[2].Y) && (o[2].X != listA[3].X && o[2].Y != listA[3].Y) && (o[2].X != listA[4].X && o[2].Y != listA[4].Y) && (o[2].X != listA[5].X && o[2].Y != listA[5].Y) && (o[2].X != listA[6].X && o[2].Y != listA[6].Y))
-                                               && ((o[3].X != listA[0].X && o[3].Y != listA[0].Y) && (o[3].X != listA[1].X && o[3].Y != listA[1].Y) && (o[3].X != listA[2].X && o[3].Y != listA[2].Y) && (o[3].X != listA[3].X && o[3].Y != listA[3].Y) && (o[3].X != listA[4].X && o[3].Y != listA[4].Y) && (o[3].X != listA[5].X && o[3].Y != listA[5].Y) && (o[3].X != listA[6].X && o[3].Y != listA[6].Y))
-                                               && ((o[4].X != listA[0].X && o[4].Y != listA[0].Y) && (o[4].X != listA[1].X && o[4].Y != listA[1].Y) && (o[4].X != listA[2].X && o[4].Y != listA[2].Y) && (o[4].X != listA[3].X && o[4].Y != listA[3].Y) && (o[4].X != listA[4].X && o[4].Y != listA[4].Y) && (o[4].X != listA[5].X && o[4].Y != listA[5].Y) && (o[4].X != listA[6].X && o[4].Y != listA[6].Y))
-                                               && ((o[5].X != listA[0].X && o[5].Y != listA[0].Y) && (o[5].X != listA[1].X && o[5].Y != listA[1].Y) && (o[5].X != listA[2].X && o[5].Y != listA[2].Y) && (o[4].X != listA[3].X && o[5].Y != listA[3].Y) && (o[5].X != listA[4].X && o[5].Y != listA[4].Y) && (o[5].X != listA[5].X && o[5].Y != listA[5].Y) && (o[5].X != listA[6].X && o[5].Y != listA[6].Y))
-                                               && ((o[6].X != listA[0].X && o[6].Y != listA[0].Y) && (o[6].X != listA[1].X && o[6].Y != listA[1].Y) && (o[6].X != listA[2].X && o[6].Y != listA[2].Y) && (o[6].X != listA[3].X && o[6].Y != listA[3].Y) && (o[6].X != listA[4].X && o[6].Y != listA[4].Y) && (o[6].X != listA[5].X && o[6].Y != listA[5].Y) && (o[6].X != listA[6].X && o[6].Y != listA[6].Y))
-                                                         ).First();
+
+                        List<SnakePart> listB = filteredSnakeList.First();                                                                    
+                                                       
                         Console.WriteLine("The pair values are listed below...");
 
-                        Console.WriteLine("7 Snakes A: " + listA[0] + " + " +
+                        Console.WriteLine("7 Snakes A: " + listA[0].value + " + " +
                                           listA[1].value + " + " +
                                           listA[2].value + " + " +
                                           listA[3].value + " + " +
                                           listA[4].value + " + " +
                                           listA[5].value + " + " +
                                           listA[6].value + " = " + sumA);
-                        Console.WriteLine("7 Snakes B: " + listB[0] + " + " +
+                        Console.WriteLine("7 Snakes B: " + listB[0].value + " + " +
                                           listB[1].value + " + " +
                                           listB[2].value + " + " +
                                           listB[3].value + " + " +
@@ -141,19 +152,18 @@ namespace SevenSnakeProblem
                                           listB[6].value + " = " + sumA);
                         Console.WriteLine("Please press ENTER to exit...");
                         Console.ReadLine();
-                        Console.Write("tete");
+                        Environment.Exit(0);
+
                     }
                 }
 
-                if (count == 0)
+                if (count2 == 0)
                 {
-                    Console.WriteLine("FAIL");
+                    Console.WriteLine("FAIL! Any valid pair found. Please try again with another values!");
                     Console.WriteLine("Please press ENTER to exit...");
                     Console.ReadLine();
+                    Environment.Exit(0);
                 }
-
-                
-                
             }  
         }        
     }
